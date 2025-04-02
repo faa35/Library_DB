@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>User Details: {{ user['Name'] }}</h1>
+    <p><strong>User ID:</strong> {{ user['UserID'] }}</p>
+    <p><strong>Contact Info:</strong> {{ user['ContactInfo'] }}</p>
+    <p><strong>Membership ID:</strong> {{ user['MembershipID'] }}</p>
+    <p><strong>Total Fines:</strong> ${{ user['TotalFines'] }}</p>
+    <p><strong>Is Volunteer:</strong> {{ 'Yes' if user['IsVolunteer'] == 1 else 'No' }}</p>
+
+    <h2>Borrowings</h2>
+    {% if borrows %}
+        <table border="1">
+            <tr>
+                <th>Copy ID</th>
+                <th>Borrow Date</th>
+                <th>Due Date</th>
+                <th>Return Date</th>
+            </tr>
+            {% for borrow in borrows %}
+            <tr>
+                <td>{{ borrow['CopyID'] }}</td>
+                <td>{{ borrow['BorrowDate'] }}</td>
+                <td>{{ borrow['DueDate'] }}</td>
+                <td>{{ borrow['ReturnDate'] if borrow['ReturnDate'] else 'Not Returned' }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No borrowings found for this user.</p>
+    {% endif %}
+    <a href="{{ url_for('users') }}">Back to Users</a> | <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>

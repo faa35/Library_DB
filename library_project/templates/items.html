@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Items</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>All Items</h1>
+    {% if items %}
+        {% for item in items %}
+            <h2>{{ item['Title'] }} (ID: {{ item['ItemID'] }})</h2>
+            <p><strong>Type:</strong> {{ item['Type'] }}</p>
+            <p><strong>Author:</strong> {{ item['Author'] if item['Author'] else 'N/A' }}</p>
+            <p><strong>Publication Date:</strong> {{ item['PublicationDate'] if item['PublicationDate'] else 'N/A' }}</p>
+            <p><strong>Genre:</strong> {{ item['Genre'] if item['Genre'] else 'N/A' }}</p>
+            <h3>Copies</h3>
+            {% if copies[item['ItemID']] %}
+                <table border="1">
+                    <tr>
+                        <th>Copy ID</th>
+                        <th>Condition</th>
+                        <th>Availability</th>
+                    </tr>
+                    {% for copy in copies[item['ItemID']] %}
+                    <tr>
+                        <td>{{ copy['CopyID'] }}</td>
+                        <td>{{ copy['Condition'] if copy['Condition'] else 'N/A' }}</td>
+                        <td>{{ 'Available' if copy['Availability'] == 1 else 'Not Available' }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>No copies available for this item.</p>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>No items found.</p>
+    {% endif %}
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>

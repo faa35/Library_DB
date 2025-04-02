@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Users</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>All Users</h1>
+    {% if users %}
+        <table border="1">
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Contact Info</th>
+                <th>Membership ID</th>
+                <th>Total Fines</th>
+                <th>Is Volunteer</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user['UserID'] }}</td>
+                <td><a href="{{ url_for('user', user_id=user['UserID']) }}">{{ user['Name'] }}</a></td>
+                <td>{{ user['ContactInfo'] }}</td>
+                <td>{{ user['MembershipID'] }}</td>
+                <td>{{ user['TotalFines'] }}</td>
+                <td>{{ 'Yes' if user['IsVolunteer'] == 1 else 'No' }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No users found.</p>
+    {% endif %}
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>

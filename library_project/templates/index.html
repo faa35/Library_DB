@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Welcome to the Library Management System</h1>
+    <p>Choose an action below:</p>
+    <ul>
+        <li><a href="{{ url_for('users') }}">View All Users</a></li>
+        <li><a href="{{ url_for('items') }}">View All Items</a></li>
+        <li><a href="{{ url_for('borrow') }}">Borrow a Copy</a></li>
+        <li><a href="{{ url_for('return_copy_route') }}">Return a Copy</a></li>
+        <li><a href="{{ url_for('donate') }}">Donate an Item</a></li>
+        <li><a href="{{ url_for('events') }}">Find an Event</a></li>
+        <li><a href="{{ url_for('register_event_route') }}">Register for an Event</a></li>
+        <li><a href="{{ url_for('volunteer') }}">Volunteer for the Library</a></li>
+        <li><a href="{{ url_for('ask_help') }}">Ask for Help</a></li>
+    </ul>
+</body>
+</html>

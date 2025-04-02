@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register for an Event</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Register for an Event</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form method="POST" onsubmit="disableButton()">
+        <label for="user_id">User:</label>
+        <select name="user_id" required>
+            <option value="" disabled selected>Select a user</option>
+            {% for user in users %}
+            <option value="{{ user['UserID'] }}">{{ user['Name'] }} (ID: {{ user['UserID'] }})</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="event_id">Event:</label>
+        <select name="event_id" required>
+            <option value="" disabled selected>Select an event</option>
+            {% for event in events %}
+            <option value="{{ event['EventID'] }}">{{ event['Name'] }} (ID: {{ event['EventID'] }}, Date: {{ event['Date'] }})</option>
+            {% endfor %}
+        </select><br>
+
+        <button type="submit" id="registerButton">Register</button>
+    </form>
+    <a href="{{ url_for('events') }}">Back to Events</a>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+
+    <script>
+        function disableButton() {
+            document.getElementById("registerButton").disabled = true;
+            document.getElementById("registerButton").innerText = "Registering...";
+        }
+    </script>
+</body>
+</html>

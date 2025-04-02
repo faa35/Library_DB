@@ -1,0 +1,83 @@
+<!-- templates/return.html -->
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Return a Copy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Return a Copy</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form method="POST" onsubmit="disableButton()">
+        <label for="user_id">User:</label>
+        <select name="user_id" id="user_id" required onchange="filterCopies()">
+            <option value="" disabled selected>Select a user</option>
+            {% for user in users %}
+            <option value="{{ user['UserID'] }}">{{ user['Name'] }} (ID: {{ user['UserID'] }})</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="copy_id">Copy to Return:</label>
+        <select name="copy_id" id="copy_id" required>
+            <option value="" disabled selected>Select a copy</option>
+            {% for borrow in borrows %}
+            <option value="{{ borrow['CopyID'] }}" data-user-id="{{ borrow['UserID'] }}">
+                CopyID {{ borrow['CopyID'] }} (Borrowed by {{ borrow['UserID'] }} on {{ borrow['BorrowDate'] }})
+            </option>
+            {% endfor %}
+        </select><br>
+
+        <label for="return_date">Return Date (YYYY-MM-DD):</label>
+        <input type="text" name="return_date" required placeholder="e.g., 2025-04-02"><br>
+
+        <button type="submit" id="returnButton">Return</button>
+    </form>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+
+    <script>
+        function disableButton() {
+            document.getElementById("returnButton").disabled = true;
+            document.getElementById("returnButton").innerText = "Returning...";
+        }
+
+        function filterCopies() {
+            const userId = document.getElementById("user_id").value;
+            const copySelect = document.getElementById("copy_id");
+            const options = copySelect.getElementsByTagName("option");
+
+            for (let i = 0; i < options.length; i++) {
+                const option = options[i];
+                const optionUserId = option.getAttribute("data-user-id");
+                if (optionUserId) {
+                    if (userId === optionUserId) {
+                        option.style.display = "block";
+                    } else {
+                        option.style.display = "none";
+                    }
+                }
+            }
+
+            // Reset the selected copy if the user changes
+            copySelect.value = "";
+        }
+
+        // Run filter on page load to ensure initial state is correct
+        filterCopies();
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ask for Help</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Ask for Help from a Librarian</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form method="POST" onsubmit="disableButton()">
+        <label for="user_id">User:</label>
+        <select name="user_id" required>
+            <option value="" disabled selected>Select a user</option>
+            {% for user in users %}
+            <option value="{{ user['UserID'] }}">{{ user['Name'] }} (ID: {{ user['UserID'] }})</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="issue">Issue:</label>
+        <textarea name="issue" required placeholder="Describe your issue..."></textarea><br>
+
+        <button type="submit" id="helpButton">Submit Request</button>
+    </form>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+
+    <script>
+        function disableButton() {
+            document.getElementById("helpButton").disabled = true;
+            document.getElementById("helpButton").innerText = "Submitting...";
+        }
+    </script>
+</body>
+</html>
